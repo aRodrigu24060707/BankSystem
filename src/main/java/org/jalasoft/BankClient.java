@@ -56,6 +56,8 @@ public class BankClient {
             showAll();
         else if (commandNumber == 6)
             addInterest();
+        else if (commandNumber == 7)
+            withdraw();
         else
             System.out.println("Illegal command");
     }
@@ -83,6 +85,12 @@ public class BankClient {
         System.out.print("Enter deposit amount: ");
         int amount = scanner.nextInt();
         bankServices.deposit(currentAccount, amount); //delegates the work to the appropriate class
+    }
+
+    private void withdraw() {
+        System.out.print("Enter withdraw amount: ");
+        int amount = scanner.nextInt();
+        bankServices.withdraw(currentAccount, amount);
     }
 
     private void authorizeLoan() {

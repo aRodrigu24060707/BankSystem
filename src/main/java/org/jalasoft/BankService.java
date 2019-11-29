@@ -64,6 +64,17 @@ public class BankService {
         bankAccount.deposit(amount);
     }
 
+    /**
+     * This decrease the amount of balance in a given account
+     *
+     * @param accountNumber the account where the amount will be withdraw
+     * @param amount        the amount of money that will decrease the balance
+     *
+     */
+    public void withdraw(int accountNumber, int amount) {
+        BankAccount bankAccount = bank.getBankAccount(accountNumber);
+        bankAccount.withdraw(amount);
+    }
 
      /**
      * Verify if the amount requested can be assigned to a given account based on
