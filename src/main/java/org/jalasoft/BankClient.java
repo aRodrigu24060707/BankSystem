@@ -27,7 +27,12 @@ public class BankClient {
         while (!done) {
             System.out.print("Enter command (0=quit, 1=new, 2=select, 3=deposit, 4=loan, 5=show, 6=interest): ");
             int commandNumber = scanner.nextInt();
-            processCommand(commandNumber);
+            
+            try {
+                processCommand(commandNumber);
+            } catch (IllegalArgumentException exception) {
+                System.out.println(exception.getMessage());
+            }
         }
         scanner.close();
     }
@@ -61,8 +66,9 @@ public class BankClient {
     }
 
     private void newAccount() {
-        // Own logic
-        currentAccount = bankServices.newAccount(true); //delegates the work to the appropriate class;
+        System.out.println("Specify the origin of the account (Local, Rural, Foreign): ");
+        String accountOriginAsString = scanner.next();        
+        currentAccount = bankServices.newAccount(accountOriginAsString);
         System.out.println("Your new account number is: " + currentAccount);
     }
 
@@ -91,7 +97,7 @@ public class BankClient {
     }
 
     private void showAll() {
-        System.out.println(bankServices.toString());
+        System.out.println(bankServices.getBankInformation());
     }
 
     private void addInterest() {

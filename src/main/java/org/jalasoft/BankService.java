@@ -1,6 +1,6 @@
 package org.jalasoft;
 
-import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * BankService
@@ -10,9 +10,9 @@ public class BankService {
     private Bank bank;
 
     public BankService() {
-        bank = new Bank();
+        this.bank = new Bank();
     }
-
+    
     /**
      * Ask a given to account to bank and then grabs the balance
      * 
@@ -20,7 +20,8 @@ public class BankService {
      * @return balance of a given account
      */
     public int getBalance(int accountNumber) {
-        return bank.getBankAccount(accountNumber).getBalance();
+        BankAccount bankAccount = bank.getBankAccount(accountNumber);
+        return bankAccount.getBalance();
     }
 
     /**
@@ -28,8 +29,27 @@ public class BankService {
      * 
      * @return The account number
      */
-    public int newAccount(boolean isForeing) {
-       return bank.newAccount(isForeing);
+    public int newAccount() {
+        return bank.newAccount();
+    }
+
+    /**
+     * Create a new account and assign it an account number and sets the balance to 0
+     * 
+     * @param accountOrigin the account origin that will be assigned to the account
+     * @return The account number
+     */
+    public int newAccount(String accountOrigin) {
+        // 1.- if the accountOrigin is empty we will create a local
+        if (accountOrigin.equals("")) {
+            return bank.newAccount();
+        }
+        
+        // 2.- if the accountOrigin does not exist we will throw an exception
+        AccountOrigin accountOriginCalculated = AccountOrigin.valueOf(accountOrigin);
+
+        
+        return bank.newAccount(accountOriginCalculated);
     }
 
     /**
@@ -38,12 +58,12 @@ public class BankService {
      * @param accountNumber the account where the amount will be deposited
      * @param amount        the amount of money that will increase the balance
      * 
-     * @return if the transaction was executed successfully
      */
-    public boolean deposit(int accountNumber, int amount) {
-        bank.getBankAccount(accountNumber).deposit(amount);
-        return true;
+    public void deposit(int accountNumber, int amount) {
+        BankAccount bankAccount = bank.getBankAccount(accountNumber);
+        bankAccount.deposit(amount);
     }
+
 
      /**
      * Verify if the amount requested can be assigned to a given account based on
@@ -54,18 +74,19 @@ public class BankService {
      * @return whether the amount was approved or not
      */
     public boolean authorizeLoan(int accountNumber, int loanAmount) {
-        int balance = bank.getBankAccount(accountNumber).getBalance();
-        return balance >= loanAmount / 2;
+        BankAccount bankAccount = bank.getBankAccount(accountNumber);
+
+        //Intermediate checks
+
+        return bankAccount.hasEnoughCollateral(loanAmount);
     }
 
     /**
      * This method deposit a certain amount of money to all accounts based on a
      * interest rate
-     * 
-     * @return whether the interest payment process was successful or not
      */
-    public boolean payInterest() {
-        return bank.payInterest();
+    public void payInterest() { 
+        bank.payInterest();
     }
 
     /**
