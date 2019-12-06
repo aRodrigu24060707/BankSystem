@@ -25,13 +25,15 @@ public class BankClient {
         bankServices = new BankService();
         scanner = new Scanner(System.in);
         while (!done) {
-            System.out.print("Enter command (0=quit, 1=new, 2=select, 3=deposit, 4=loan, 5=show, 6=interest): ");
+            System.out.print("Enter command (0=quit, 1=new, 2=select, 3=deposit, 4=loan, 5=show, 6=interest, 7=withdraw): ");
             int commandNumber = scanner.nextInt();
-            
+
             try {
                 processCommand(commandNumber);
             } catch (IllegalArgumentException exception) {
                 System.out.println(exception.getMessage());
+            } catch (ArithmeticException exception) {
+                System.out.println("Please enter only number");
             }
         }
         scanner.close();
